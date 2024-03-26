@@ -3,13 +3,13 @@ pipeline {
   agent any
   stages {
 
-    stage("Git Checkout") {
-      steps {
-        script {
-           sh "git clone https://github.com/gopinitw/cicd-java-maven-project.git"
-        }
-      }
-    }
+    // stage("Git Checkout") {
+    //   steps {
+    //     script {
+    //        sh "git clone https://github.com/gopinitw/cicd-java-maven-project.git"
+    //     }
+    //   }
+    // }
 
     stage("Maven Build") {
       steps {
