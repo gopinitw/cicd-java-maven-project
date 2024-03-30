@@ -36,7 +36,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
       steps {
         script {
-          sh "aws eks describe-cluster --name eksdemo1"
+          sh "aws eks describe-cluster --name eksdemo1 --region us-east-1"
           sh "kubectl apply -f kubernetes/Deployment.yaml"
         }
       }
