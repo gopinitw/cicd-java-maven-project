@@ -36,7 +36,6 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
             script {
-  withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://627BEF2BDA2DCCB3D82C71D5635E0123.gr7.us-east-1.eks.amazonaws.com']) {
       sh 'kubectl apply -f kubernetes/Deployment.yaml'
     }
 
