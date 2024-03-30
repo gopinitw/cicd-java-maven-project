@@ -42,13 +42,4 @@ steps {
     }
   }
   }
-  post {
-    always {
-      script {
-        if (currentBuild.currentResult == 'FAILURE') {
-          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "Test@test.com", sendToIndividuals: true])
-        }
-      }
-    }
-  }
 }
