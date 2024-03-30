@@ -2,7 +2,8 @@ pipeline {
 
   agent any
     environment {
-    DOCKERHUB_CREDENTIALS=credentials('dockerhub') // Create a credentials in jenkins using your dockerhub username and token from https://hub.docker.com/settings/security
+    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    KUBECONFIG = "${HOME}/.kube/config"
   }
 
   stages {
@@ -36,7 +37,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
             script {
-      sh 'kubectl apply -f kubernetes/Deployment.yaml'
+      sh 'kubectl apply -f kubernetes/Deployment.yaml --kubeconfig=$KUBECONFIG'
     }
 
     }
