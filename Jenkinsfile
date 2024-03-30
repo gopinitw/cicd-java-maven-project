@@ -41,6 +41,7 @@ steps {
 
     }
   }
+  }
   post {
     always {
       script {
@@ -50,5 +51,4 @@ steps {
       }
     }
   }
-}
 }
