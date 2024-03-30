@@ -36,7 +36,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
       steps {
         script {
-          sh "kubectl apply -f kubernetes/ "
+          sh "kubectl apply -f kubernetes/Deployment.yaml"
         }
       }
     }
