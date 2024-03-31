@@ -3,6 +3,7 @@ pipeline {
   agent any
     environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/home/ubuntu/bin/kubectl:$PATH"
   }
 
   stages {
@@ -36,7 +37,6 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
-      sh 'export PATH=$PATH:/home/ubuntu/bin/kubectl'
       sh 'kubectl --kubeconfig=/home/ubuntu/.kube/config apply -f kubernetes/Deployment.yaml'
     }
 
