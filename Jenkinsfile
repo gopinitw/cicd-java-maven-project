@@ -37,7 +37,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
-      sh '/var/lib/jenkins/workspace/java/kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config apply -f kubernetes/Deployment.yaml'
+      sh '/var/lib/jenkins/workspace/java/kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config get pods'
     }
 
     }
