@@ -3,7 +3,6 @@ pipeline {
   agent any
     environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-    KUBECONFIG = "/home/ubuntu/.kube/config"
   }
 
   stages {
