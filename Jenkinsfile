@@ -36,6 +36,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
+      sh 'export PATH=$PATH:/home/ubuntu/bin/kubectl'
       sh 'kubectl --kubeconfig=/home/ubuntu/.kube/config apply -f kubernetes/Deployment.yaml'
     }
 
