@@ -39,7 +39,7 @@ pipeline {
       script {
       sh 'aws eks update-kubeconfig --region us-east-1 --name eksdemo1'
       sh 'kubectl config view'
-      sh 'kubectl get pods'
+      sh 'kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config get pods'
     }
 
     }
