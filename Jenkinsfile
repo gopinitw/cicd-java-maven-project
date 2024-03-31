@@ -38,6 +38,7 @@ pipeline {
     steps {
       script {
       sh '/var/lib/jenkins/workspace/java/kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config config view'
+      sh '/var/lib/jenkins/workspace/java/kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config get pods'
     }
 
     }
