@@ -37,6 +37,7 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
+      sh 'kubectl config view'
       sh '/var/lib/jenkins/workspace/java/kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config get pods'
     }
 
