@@ -3,6 +3,7 @@ pipeline {
   agent any
     environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    AWS_DEFAULT_REGION = 'us-east-1'
   }
 
   stages {
@@ -36,7 +37,10 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
-      withAWS(region:"us-east-1", credentials:"awskeys"){
+      withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'awskeys'
+                    ]]) {
       sh 'aws s3 ls'
       sh 'aws eks update-kubeconfig --region us-east-1 --name eksdemo1'
       sh 'kubectl config view'
