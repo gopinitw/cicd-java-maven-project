@@ -37,11 +37,12 @@ pipeline {
     stage("Apply the Kubernetes files") {
     steps {
       script {
+      withKubeConfig([credentialsId: 'kconfig', serverUrl: '']) {
       sh 'aws eks update-kubeconfig --region us-east-1 --name eksdemo1'
       sh 'kubectl config view'
       sh 'kubectl --kubeconfig=/var/lib/jenkins/workspace/java/config get pods'
     }
-
+      }
     }
   }
   }
