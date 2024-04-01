@@ -3,7 +3,6 @@ pipeline {
   agent any
     environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
-    PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:/home/ubuntu/bin/kubectl:$PATH"
   }
 
   stages {
