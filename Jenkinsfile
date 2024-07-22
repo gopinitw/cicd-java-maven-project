@@ -29,6 +29,7 @@ pipeline {
             $class: 'AmazonWebServicesCredentialsBinding',
             credentialsId: 'awskeys'
           ]]) {
+            sh 'aws s3 ls'
             sh 'aws eks update-kubeconfig --region us-east-1 --name eksdemo1'
             sh 'kubectl get pods'
             // Update image in Deployment.yaml
