@@ -16,14 +16,5 @@ pipeline {
         }
       }
     }
-  stage("Build & Push Docker Image") {
-      steps {
-        script {
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-          sh "docker build -t gopigundeboyina/mavencicd:$BUILD_NUMBER ."
-          sh "docker push gopigundeboyina/mavencicd:$BUILD_NUMBER"
-        }
-      }
-    }
 }
 }
