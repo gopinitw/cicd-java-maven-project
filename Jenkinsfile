@@ -3,6 +3,10 @@ pipeline {
   	tools {
 		maven "mvn"
        	}
+  environment {
+    DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+    BUILD_NUMBER = "${env.BUILD_NUMBER}"
+  }
   stages {
     stage("Maven Build") {
       steps {
