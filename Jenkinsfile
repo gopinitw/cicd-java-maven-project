@@ -6,6 +6,7 @@ pipeline {
   environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     BUILD_NUMBER = "${env.BUILD_NUMBER}"
+    AWS_DEFAULT_REGION = 'us-east-1'
   }
   stages {
     stage("Maven Build") {
@@ -26,8 +27,11 @@ pipeline {
     }
     stage("Apply the Kubernetes files") {
       steps {
+	                withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'awskeys'
+          ]]) {
         script {
-            sh 'aws s3 ls'
             sh 'aws eks update-kubeconfig --region us-east-1 --name eksdemo4'
             sh 'kubectl get pods'
             // Update image in Deployment.yaml
@@ -38,5 +42,6 @@ pipeline {
           }
         }
       }
+}
 }
 }
