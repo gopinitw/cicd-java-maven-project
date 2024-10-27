@@ -1,8 +1,5 @@
 pipeline {
   agent any
-    	tools {
-		maven "mvn"
-       	}
   environment {
     DOCKERHUB_CREDENTIALS=credentials('dockerhub')
     AWS_DEFAULT_REGION = 'us-east-1'
