@@ -1,26 +1,37 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI with Maven
+name: Java CI/CD to GKE
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
-  build:
-
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
       with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+        distribution: temurin
+        java-version: 17
+
+    - run: mvn clean package
+
+    - uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - run: gcloud auth configure-docker
+
+    - run: |
+        docker build -t gcr.io/my-project-123-477113/java-repo:${{ github.run_number }} .
+        docker push gcr.io/my-project-123-477113/java-repo:${{ github.run_number }}
+
+    - run: |
+        gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER }} \
+        --zone ${{ secrets.GKE_ZONE }} \
+        --project ${{ secrets.GCP_PROJECT_ID }}
+
+    - run: |
+        kubectl set image deployment/java-repo java-repo=gcr.io/${{ secrets.GCP_PROJECT_ID }}/java-repo:${{ github.run_number }}
