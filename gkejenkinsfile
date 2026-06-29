@@ -6,7 +6,7 @@ pipeline {
     REGION     = "us-central1"
     REPO       = "java-repo"
     IMAGE_NAME = "demo-app"
-    IMAGE = "us-central1-docker.pkg.dev/$PROJECT_ID/$REPO/demo-app"
+    IMAGE      = "us-central1-docker.pkg.dev/$PROJECT_ID/$REPO/demo-app"
     CLUSTER    = "dev"
     ZONE       = "us-central1-a"
   }
@@ -24,22 +24,27 @@ pipeline {
         sh 'mvn clean package'
       }
     }
+
     stage('Authenticate to GCP') {
       steps {
-        withCredentials([file(credentialsId: 'gcp-sa-key', variable: 'GCP_KEY')]) {
-          sh '''
-            gcloud auth activate-service-account --key-file=$GCP_KEY
-            gcloud config set project $PROJECT_ID
-            gcloud auth configure-docker us-central1-docker.pkg.dev
-          '''
-        }
+        sh '''
+          # Use the Compute Engine VM's attached Service Account
+          gcloud config set project $PROJECT_ID
+
+          # Verify the authenticated account
+          gcloud auth list
+
+          # Configure Docker for Artifact Registry
+          gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+        '''
       }
     }
+
     stage('Build Image') {
       steps {
         sh """
-        docker build -t $IMAGE:$BUILD_NUMBER .
-        docker push $IMAGE:$BUILD_NUMBER
+          docker build -t $IMAGE:$BUILD_NUMBER .
+          docker push $IMAGE:$BUILD_NUMBER
         """
       }
     }
@@ -47,10 +52,14 @@ pipeline {
     stage('Deploy to GKE') {
       steps {
         sh """
-        gcloud container clusters get-credentials $CLUSTER --zone $ZONE
-        kubectl get deployment demo-app || kubectl apply -f kubernetes/Deployment.yaml
-        kubectl set image deployment/demo-app \
-         demo=$IMAGE:$BUILD_NUMBER
+          gcloud container clusters get-credentials $CLUSTER --zone $ZONE
+
+          kubectl get deployment demo-app || kubectl apply -f kubernetes/Deployment.yaml
+
+          kubectl set image deployment/demo-app \
+            demo=$IMAGE:$BUILD_NUMBER
+
+          kubectl rollout status deployment/demo-app
         """
       }
     }
