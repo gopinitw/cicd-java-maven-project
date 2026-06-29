@@ -2,13 +2,13 @@ pipeline {
   agent any
 
   environment {
-    PROJECT_ID = "dev-uk-123"
+    PROJECT_ID = "project-addaa4da-17e4-4d6e-ab0"
     REGION     = "us-central1"
     REPO       = "java-repo"
     IMAGE_NAME = "demo-app"
     IMAGE = "us-central1-docker.pkg.dev/$PROJECT_ID/$REPO/demo-app"
-    CLUSTER    = "nitwallah"
-    ZONE       = "us-central1-c"
+    CLUSTER    = "dev"
+    ZONE       = "us-central1-a"
   }
 
   stages {
